@@ -22,7 +22,7 @@ class Matrix:
         """
 
         self.row, self.column = row, column
-        self.array = [[default_value for c in range(column)] for r in range(row)]
+        self.array = [[default_value for _ in range(column)] for _ in range(row)]
 
     def __str__(self) -> str:
         """

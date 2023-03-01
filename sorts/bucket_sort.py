@@ -48,7 +48,7 @@ def bucket_sort(my_list: list) -> list:
     >>> bucket_sort(collection) == sorted(collection)
     True
     """
-    if len(my_list) == 0:
+    if not my_list:
         return []
     min_value, max_value = min(my_list), max(my_list)
     bucket_count = int(max_value - min_value) + 1

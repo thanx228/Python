@@ -24,10 +24,7 @@ class FlowNetwork:
         # make fake vertex if there are more
         # than one source or sink
         if len(sources) > 1 or len(sinks) > 1:
-            max_input_flow = 0
-            for i in sources:
-                max_input_flow += sum(self.graph[i])
-
+            max_input_flow = sum(sum(self.graph[i]) for i in sources)
             size = len(self.graph) + 1
             for room in self.graph:
                 room.insert(0, 0)
@@ -95,7 +92,9 @@ class PushRelabelExecutor(MaximumFlowAlgorithmExecutor):
     def __init__(self, flow_network):
         super().__init__(flow_network)
 
-        self.preflow = [[0] * self.verticies_count for i in range(self.verticies_count)]
+        self.preflow = [
+            [0] * self.verticies_count for _ in range(self.verticies_count)
+        ]
 
         self.heights = [0] * self.verticies_count
         self.excesses = [0] * self.verticies_count
@@ -113,7 +112,7 @@ class PushRelabelExecutor(MaximumFlowAlgorithmExecutor):
         vertices_list = [
             i
             for i in range(self.verticies_count)
-            if i != self.source_index and i != self.sink_index
+            if i not in [self.source_index, self.sink_index]
         ]
 
         # move through list
@@ -163,9 +162,8 @@ class PushRelabelExecutor(MaximumFlowAlgorithmExecutor):
                 self.graph[vertex_index][to_index]
                 - self.preflow[vertex_index][to_index]
                 > 0
-            ):
-                if min_height is None or self.heights[to_index] < min_height:
-                    min_height = self.heights[to_index]
+            ) and (min_height is None or self.heights[to_index] < min_height):
+                min_height = self.heights[to_index]
 
         if min_height is not None:
             self.heights[vertex_index] = min_height + 1

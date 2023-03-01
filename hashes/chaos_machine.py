@@ -53,7 +53,7 @@ def pull():
     key = machine_time % m
 
     # Evolution (Time Length)
-    for _ in range(0, t):
+    for _ in range(t):
         # Variables (Position + Parameters)
         r = params_space[key]
         value = buffer_space[key]
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     inp = ""
 
     # Pulling Data (Output)
-    while inp in ("e", "E"):
+    while inp in {"e", "E"}:
         print(f"{format(pull(), '#04x')}")
         print(buffer_space)
         print(params_space)

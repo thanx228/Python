@@ -19,10 +19,7 @@ def rearrange(bit_string_32):
 
     if len(bit_string_32) != 32:
         raise ValueError("Need length 32")
-    new_string = ""
-    for i in [3, 2, 1, 0]:
-        new_string += bit_string_32[8 * i : 8 * i + 8]
-    return new_string
+    return "".join(bit_string_32[8 * i : 8 * i + 8] for i in [3, 2, 1, 0])
 
 
 def reformat_hex(i):
@@ -36,10 +33,7 @@ def reformat_hex(i):
     """
 
     hexrep = format(i, "08x")
-    thing = ""
-    for i in [3, 2, 1, 0]:
-        thing += hexrep[2 * i : 2 * i + 2]
-    return thing
+    return "".join(hexrep[2 * i : 2 * i + 2] for i in [3, 2, 1, 0])
 
 
 def pad(bit_string):
@@ -74,10 +68,7 @@ def get_block(bit_string):
     curr_pos = 0
     while curr_pos < len(bit_string):
         curr_part = bit_string[curr_pos : curr_pos + 512]
-        my_splits = []
-        for i in range(16):
-            my_splits.append(int(rearrange(curr_part[32 * i : 32 * i + 32]), 2))
-        yield my_splits
+        yield [int(rearrange(curr_part[32 * i : 32 * i + 32]), 2) for i in range(16)]
         curr_pos += 512
 
 
@@ -87,9 +78,7 @@ def not32(i):
     4294967261
     """
     i_str = format(i, "032b")
-    new_str = ""
-    for c in i_str:
-        new_str += "1" if c == "0" else "0"
+    new_str = "".join("1" if c == "0" else "0" for c in i_str)
     return int(new_str, 2)
 
 
@@ -109,9 +98,7 @@ def md5me(test_string):
             testString {[string]} -- [message]
     """
 
-    bs = ""
-    for i in test_string:
-        bs += format(ord(i), "08b")
+    bs = "".join(format(ord(i), "08b") for i in test_string)
     bs = pad(bs)
 
     tvals = [int(2**32 * abs(math.sin(i + 1))) for i in range(64)]
@@ -218,8 +205,12 @@ def md5me(test_string):
         c0 = sum32(c0, c)
         d0 = sum32(d0, d)
 
-    digest = reformat_hex(a0) + reformat_hex(b0) + reformat_hex(c0) + reformat_hex(d0)
-    return digest
+    return (
+        reformat_hex(a0)
+        + reformat_hex(b0)
+        + reformat_hex(c0)
+        + reformat_hex(d0)
+    )
 
 
 def test():

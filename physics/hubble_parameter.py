@@ -70,23 +70,21 @@ def hubble_parameter(
     68.3
     """
     parameters = [redshift, radiation_density, matter_density, dark_energy]
-    if any(0 > p for p in parameters):
+    if any(p < 0 for p in parameters):
         raise ValueError("All input parameters must be positive")
 
-    if any(1 < p for p in parameters[1:4]):
+    if any(p > 1 for p in parameters[1:4]):
         raise ValueError("Relative densities cannot be greater than one")
-    else:
-        curvature = 1 - (matter_density + radiation_density + dark_energy)
+    curvature = 1 - (matter_density + radiation_density + dark_energy)
 
-        e_2 = (
-            radiation_density * (redshift + 1) ** 4
-            + matter_density * (redshift + 1) ** 3
-            + curvature * (redshift + 1) ** 2
-            + dark_energy
-        )
+    e_2 = (
+        radiation_density * (redshift + 1) ** 4
+        + matter_density * (redshift + 1) ** 3
+        + curvature * (redshift + 1) ** 2
+        + dark_energy
+    )
 
-        hubble = hubble_constant * e_2 ** (1 / 2)
-        return hubble
+    return hubble_constant * e_2 ** (1 / 2)
 
 
 if __name__ == "__main__":

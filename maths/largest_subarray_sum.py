@@ -9,7 +9,7 @@ def max_sub_array_sum(a: list, size: int = 0):
     size = size or len(a)
     max_so_far = -maxsize - 1
     max_ending_here = 0
-    for i in range(0, size):
+    for i in range(size):
         max_ending_here = max_ending_here + a[i]
         max_so_far = max(max_so_far, max_ending_here)
         max_ending_here = max(max_ending_here, 0)

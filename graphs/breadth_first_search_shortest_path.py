@@ -77,7 +77,7 @@ class Graph:
                 f"No path from vertex: {self.source_vertex} to vertex: {target_vertex}"
             )
 
-        return self.shortest_path(target_vertex_parent) + f"->{target_vertex}"
+        return f"{self.shortest_path(target_vertex_parent)}->{target_vertex}"
 
 
 if __name__ == "__main__":
