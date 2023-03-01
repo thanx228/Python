@@ -170,7 +170,7 @@ def viterbi(
             pointers[(state, observation)] = arg_max
 
     # The final observation
-    final_observation = observations_space[len(observations_space) - 1]
+    final_observation = observations_space[-1]
 
     # argmax for given final observation
     arg_max = ""
@@ -298,10 +298,9 @@ def _validate_list(_object: Any, var_name: str) -> None:
     """
     if not isinstance(_object, list):
         raise ValueError(f"{var_name} must be a list")
-    else:
-        for x in _object:
-            if not isinstance(x, str):
-                raise ValueError(f"{var_name} must be a list of strings")
+    for x in _object:
+        if not isinstance(x, str):
+            raise ValueError(f"{var_name} must be a list of strings")
 
 
 def _validate_dicts(

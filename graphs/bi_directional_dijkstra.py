@@ -32,8 +32,6 @@ def bidirectional_dij(
     >>> bidirectional_dij("E", "F", graph_fwd, graph_bwd)
     3
     """
-    shortest_path_distance = -1
-
     visited_forward = set()
     visited_backward = set()
     cst_fwd = {source: 0}
@@ -80,9 +78,12 @@ def bidirectional_dij(
                 queue_forward.put((new_cost_f, nxt_fwd))
                 cst_fwd[nxt_fwd] = new_cost_f
                 parent_forward[nxt_fwd] = v_fwd
-            if nxt_fwd in visited_backward:
-                if cst_fwd[v_fwd] + d_forward + cst_bwd[nxt_fwd] < shortest_distance:
-                    shortest_distance = cst_fwd[v_fwd] + d_forward + cst_bwd[nxt_fwd]
+            if (
+                nxt_fwd in visited_backward
+                and cst_fwd[v_fwd] + d_forward + cst_bwd[nxt_fwd]
+                < shortest_distance
+            ):
+                shortest_distance = cst_fwd[v_fwd] + d_forward + cst_bwd[nxt_fwd]
 
         # backward pass and relaxation
         for nxt_bwd, d_backward in graph_backward[v_bwd]:
@@ -95,16 +96,17 @@ def bidirectional_dij(
                 cst_bwd[nxt_bwd] = new_cost_b
                 parent_backward[nxt_bwd] = v_bwd
 
-            if nxt_bwd in visited_forward:
-                if cst_bwd[v_bwd] + d_backward + cst_fwd[nxt_bwd] < shortest_distance:
-                    shortest_distance = cst_bwd[v_bwd] + d_backward + cst_fwd[nxt_bwd]
+            if (
+                nxt_bwd in visited_forward
+                and cst_bwd[v_bwd] + d_backward + cst_fwd[nxt_bwd]
+                < shortest_distance
+            ):
+                shortest_distance = cst_bwd[v_bwd] + d_backward + cst_fwd[nxt_bwd]
 
         if cst_fwd[v_fwd] + cst_bwd[v_bwd] >= shortest_distance:
             break
 
-    if shortest_distance != np.inf:
-        shortest_path_distance = shortest_distance
-    return shortest_path_distance
+    return shortest_distance if shortest_distance != np.inf else -1
 
 
 graph_fwd = {

@@ -62,20 +62,18 @@ def _validate_point(point: list[float]) -> None:
          ...
     TypeError: Expected a list of numbers as input, found str
     """
-    if point:
-        if isinstance(point, list):
-            for item in point:
-                if not isinstance(item, (int, float)):
-                    raise TypeError(
-                        f"Expected a list of numbers as input, "
-                        f"found {type(item).__name__}"
-                    )
-        else:
-            raise TypeError(
-                f"Expected a list of numbers as input, found {type(point).__name__}"
-            )
-    else:
+    if not point:
         raise ValueError("Missing an input")
+    if not isinstance(point, list):
+        raise TypeError(
+            f"Expected a list of numbers as input, found {type(point).__name__}"
+        )
+    for item in point:
+        if not isinstance(item, (int, float)):
+            raise TypeError(
+                f"Expected a list of numbers as input, "
+                f"found {type(item).__name__}"
+            )
 
 
 def manhattan_distance_one_liner(point_a: list, point_b: list) -> float:

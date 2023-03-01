@@ -39,26 +39,21 @@ def solve(post_fix):
         if x.isdigit():  # if x in digit
             stack.append(x)  # append x to stack
             # output in tabular format
-            print(x.rjust(8), ("push(" + x + ")").ljust(12), ",".join(stack), sep=" | ")
+            print(x.rjust(8), f"push({x})".ljust(12), ",".join(stack), sep=" | ")
         else:
             b = stack.pop()  # pop stack
             # output in tabular format
-            print("".rjust(8), ("pop(" + b + ")").ljust(12), ",".join(stack), sep=" | ")
+            print("".rjust(8), f"pop({b})".ljust(12), ",".join(stack), sep=" | ")
 
             a = stack.pop()  # pop stack
             # output in tabular format
-            print("".rjust(8), ("pop(" + a + ")").ljust(12), ",".join(stack), sep=" | ")
+            print("".rjust(8), f"pop({a})".ljust(12), ",".join(stack), sep=" | ")
 
             stack.append(
                 str(opr[x](int(a), int(b)))
             )  # evaluate the 2 values popped from stack & push result to stack
             # output in tabular format
-            print(
-                x.rjust(8),
-                ("push(" + a + x + b + ")").ljust(12),
-                ",".join(stack),
-                sep=" | ",
-            )
+            print(x.rjust(8), f"push({a}{x}{b})".ljust(12), ",".join(stack), sep=" | ")
 
     return int(stack[0])
 

@@ -30,21 +30,13 @@ def solution():
 
     a = []
     for line in triangle:
-        numbers_from_line = []
-        for number in line.strip().split(" "):
-            numbers_from_line.append(int(number))
+        numbers_from_line = [int(number) for number in line.strip().split(" ")]
         a.append(numbers_from_line)
 
     for i in range(1, len(a)):
         for j in range(len(a[i])):
-            if j != len(a[i - 1]):
-                number1 = a[i - 1][j]
-            else:
-                number1 = 0
-            if j > 0:
-                number2 = a[i - 1][j - 1]
-            else:
-                number2 = 0
+            number1 = a[i - 1][j] if j != len(a[i - 1]) else 0
+            number2 = a[i - 1][j - 1] if j > 0 else 0
             a[i][j] += max(number1, number2)
     return max(a[-1])
 

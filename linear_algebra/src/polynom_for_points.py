@@ -28,7 +28,7 @@ def points_to_polynomial(coordinates: list[list[int]]) -> str:
     >>> print(points_to_polynomial([[1, 5], [2, 2], [3, 9]]))
     f(x)=x^2*5.0+x^1*-18.0+x^0*18.0
     """
-    if len(coordinates) == 0 or not all(len(pair) == 2 for pair in coordinates):
+    if not coordinates or any(len(pair) != 2 for pair in coordinates):
         raise ValueError("The program cannot work out a fitting polynomial.")
 
     if len({tuple(pair) for pair in coordinates}) != len(coordinates):
@@ -47,12 +47,10 @@ def points_to_polynomial(coordinates: list[list[int]]) -> str:
     matrix: list[list[float]] = []
     # put the x and x to the power values in a matrix
     while count_of_line < x:
-        count_in_line = 0
         a = coordinates[count_of_line][0]
-        count_line: list[float] = []
-        while count_in_line < x:
-            count_line.append(a ** (x - (count_in_line + 1)))
-            count_in_line += 1
+        count_line: list[float] = [
+            a ** (x - (count_in_line + 1)) for count_in_line in range(x)
+        ]
         matrix.append(count_line)
         count_of_line += 1
 

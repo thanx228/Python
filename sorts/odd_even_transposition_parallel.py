@@ -33,7 +33,7 @@ def oe_process(position, value, l_send, r_send, lr_cv, rr_cv, result_pipe):
     # we perform n swaps since after n swaps we know we are sorted
     # we *could* stop early if we are sorted already, but it takes as long to
     # find out we are sorted as it does to sort the list with this algorithm
-    for i in range(0, 10):
+    for i in range(10):
         if (i + position) % 2 == 0 and r_send is not None:
             # send your value to your right neighbor
             process_lock.acquire()
@@ -72,22 +72,18 @@ arr = the list to be sorted
 
 
 def odd_even_transposition(arr):
-    process_array_ = []
-    result_pipe = []
-    # initialize the list of pipes where the values will be retrieved
-    for _ in arr:
-        result_pipe.append(Pipe())
+    result_pipe = [Pipe() for _ in arr]
     # creates the processes
     # the first and last process only have one neighbor so they are made outside
     # of the loop
     temp_rs = Pipe()
     temp_rr = Pipe()
-    process_array_.append(
+    process_array_ = [
         Process(
             target=oe_process,
             args=(0, arr[0], None, temp_rs, None, temp_rr, result_pipe[0]),
         )
-    )
+    ]
     temp_lr = temp_rs
     temp_ls = temp_rr
 
@@ -123,7 +119,7 @@ def odd_even_transposition(arr):
         p.start()
 
     # wait for the processes to end and write their values to the list
-    for p in range(0, len(result_pipe)):
+    for p in range(len(result_pipe)):
         arr[p] = result_pipe[p][0].recv()
         process_array_[p].join()
     return arr

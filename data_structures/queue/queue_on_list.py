@@ -8,8 +8,7 @@ class Queue:
         self.front = 0
 
     def __str__(self):
-        printed = "<" + str(self.entries)[1:-1] + ">"
-        return printed
+        return f"<{str(self.entries)[1:-1]}>"
 
     """Enqueues {@code item}
     @param item
